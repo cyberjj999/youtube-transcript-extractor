@@ -1,7 +1,7 @@
 # Youtube Transcript Extractor
 A chrome extension to supercharge your workflow and improve your productivity by extracting YouTube's transcript.
 
-## Update as of 28 March 20222
+## Update as of 28 March 2022
 YouTube has updated their HTML DOM and the current chrome extension will not be working.
 I have instead created a seamless to use Python Script to extract YouTube transcript.
 
