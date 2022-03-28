@@ -1,6 +1,5 @@
-// @author Rob W <http://stackoverflow.com/users/938089/rob-w>
 // Demo: var serialized_html = DOMtoString(document);
-// MY DUMBASS JUST FOUND OUT THERE'S YOUTUBE API TO EXTRACT SUCH THINGS BUT NVM
+// As of 28 Mar 2022, YouTube has changed their HTML DOM and the script is not functioning. I have created another python script which uses the api mentioned below to extract YouTube transcript.
 // https://stackoverflow.com/questions/14061195/how-to-get-transcript-in-youtube-api-v3
 
 // Format transcript text by breaking it into chunks of 60 words
