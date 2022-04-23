@@ -1,9 +1,83 @@
-hi i'm Jia Jun and i am an aspiring entrepreneur my greatest takeaway from nyp is learning how to learn for example in our modules in nyp our lecturers actually provide us with the toolset technology to solve various problems this allows us to actually explore ourselves to inculcate a inquisitive mindset and allow us to become a lifelong learner being 
+hello everybody kyle here from webdev simplified in today's video we're going to be talking about promises in javascript which look incredibly difficult but are much more simple than they actually appeared so let's get started now to get started let's talk about the idea of a promise before we get into the actual syntax of it a promise in 
 
-a google developer student club they provide me with the opportunities to participate in google technology conference network googlers and even visit google singapore office through this different initiative i'm actually able to start a club in nyp call nypd developers doing club and through all these experiences i've definitely learned to become a better communicator and a greater leader 
+JavaScript is just like a promise in real life what you do is you commit to something by saying I promise to do something for example I promise to make the best video on promise as I can and then that promise either has two results either that promise has completed it is resolved or that promise is failed and 
 
-one of the challenges that i can vividly remember is hosting an info session for nyp developer student club this is the first event that i take full control and responsibility for it involves i will give a 30 minute long speech to nearly 100 students in a lecture theater and my lack of confidence and introverted nature proved to 
+it is rejected so if I give you the best video ever on promises then I would resolve my promise to do so but if I failed to give you the best video ever on promises then that would be rejected because I was not able to complete that promise and I've rejected it so now let's look at the 
 
-be a huge roadblock however i am truly glad that everything went smoothly i credit the success of this event to two things firstly my determination in wanting to deliver the best speech despite feeling nervous i found a way to calm myself down by reading off a script instead of trying to recall information during the presentation secondly i'm 
+actual syntax of creating a promise we just create a variable here we'll call it P and we're going to set it to a new promise and this promise object is going to take one parameter which is a function which gets passed to variables of resolve and reject so we have a resolve parameter our reject parameter and then 
 
-very thankful for my teammates who are so supportive of me as well kohinity has taught me to not take things for granted and to always be grateful and therefore i choose to be optimistic and look at the brighter side of things 
+we need to actually create the definition of that function inside and if you're confused by this arrow syntax here just check out my video where I cover the arrow syntax for functions because it's extremely straightforward and much easier to write functions in this manner so after you're done checking that out now inside of this promise section we 
+
+need to find what the actual promise is so in my example the code inside of here would be me giving you the best video ever on promises so we're just going to put some simple code in here we're gonna create a variable a we're just going to set it to 1 plus 1 so that way this is 
+
+what the promise does and if this failed we would reject it so we would say if a is equal to 2 we would resolve it but if it is not so what say it's not equal to 2 we would reject so in the reject we can pass anything that we want back into this reject we're just gonna 
+
+pass the message that said failed and then in our resolve this again we can pass it absolutely anything we want but we'll just pass it a message that says success so as you know this code is always going to be successful because 1 plus 1 is always equal to 2 so it's going to recall this is resolved 
+
+method that gets passed in but if we change this to be 1 plus 2 we would get this reject method because it doesn't equal two anymore and we would be calling the reject method so now let's look at how we actually interact with promises so if we go down here we can just say that P since it's 
+
+our promise then all we have to do is say dot then anything inside of a dot then is going to run for resolve because I say I'm going to give you the best video ever on promises then you are going to do something else after I'm done with that so in here this is then then all it 
+
+does is take a method in our case it's going to just have a single parameter since we're passing a single parameter to result and that's just going to be our message and then we just wanted to find what we do with that function so we can just say console dot log this is in the Senate is in 
+
+the then and then we can just pass it the message so we can actually see what that is saying but to be able to catch an error we need to use the dot catch version of this so we just say dot catch and this will catch any errors which are our reject States and just like our then 
+
+we're just passing in a single parameter of a message and we can just do something very similar we do console dot log this is in catch the catch and we can just print out that message and there we go this is exactly how you use promises they're very similar to callbacks which we're going to look at in 
+
+a little bit but a little bit cleaner way of doing callbacks and as you can see then is going to be called when our promise resolves successfully and catch is going to be called if I promise is rejected or fails so now let's actually run this and see how it looks so I hope we say that you'll 
+
+see that we got this is in then and it is the success because my plus one is equal to two and if we change this to be not true and we save it again you'll see that this is in the catch and it has failed so as you can see when we called this we create a promise 
+
+here we tell it what we want to do when it succeeds we tell it what we want to do when it fails and then in our code we say do this when it succeeds and do this when it fails promises are really great when you need to do something that's going to take a long time in the 
+
+background such as downloading an image from a different server and you just want to do something after it's complete instead of making everything else wait for it and then also you can catch it to see if it's failed so that way you can maybe retry it or give the user an error message if it did fail so 
+
+now let's look at an example of how we can take something that uses callbacks which is what promises are meant to replace and actually replace it you with promises and it's a lot easier than it sounds I have open a very simple callback function which takes two callbacks one for the success and one for an error and 
+
+all it does is check two variables to see if either of them are true if they are it'll throw an error and if they're neither of these variables are true it'll call the success callback saying that everything went well so this won't watch tutorial callback function all we do is we call it and we give it our 
+
+two callbacks our first callback is going to be first successes and our second callback is going to be for an error so if we save this and run it as you can see both our variables are false and we get success thumbs up and subscribe but if we change one of these variables are true let's say the 
+
+user left while watching the tutorial and now I'm going to say user left with a frowny face or if we change that back to false and we change this one saying that the user is now watching cat memes to true it'll say that the user is watching a cat meme and that cats are better than me so 
+
+now let's implement this using promises instead of callbacks because this is what promises were really meant to solve so all we need to do is we could just copy this entire function here we'll just paste it down here a little ways so we can have it to work with and we'll just change it to be promise instead 
+
+of being callback for the naming and we can completely remove both of these callback functions for parameters because that's the whole point of using promises is that we no longer have these callbacks and all we need to do inside of here is return a promise so we can say return new promise and as we know that promise 
+
+takes two parameters the result and reject and inside of that function we just want to define all of our code that was calling these callbacks so resolve is going to be our successful callback so we can just replace everywhere we have callback with resolve and reject is going to be that error callback so we'll just replace all 
+
+of those and there we go we've completely overhauled this function to use instead of callbacks and as you can see the code itself is almost exactly the same all we did is change a few variable names and now we're returning a new promise instead of calling the callbacks so now let's look at how we can actually use 
+
+this function so let's copy what we have up here so that we can see how we need to change this watch tutorial call back into watch tutorial promise so the first thing that we know is that this is a function that takes no parameters so we need to call this function and then do something afterwards since it 
+
+returns a promise so we say dot then and then like we know is going to be our success callback so we can make it our very first method here which is this so as soon as that function is done we just need to end that and now we can do our dot catch so we add dot keshan 
+
+here to catch all of our errors and there we go we've completely transformed that callback to be using promises now and as you see again our code is almost exactly the same so now if I comment out all this callback related stuff and if we rerun it you'll see that we get the exact same output for no 
+
+matter what set of variables we have but still we change it all the false you see we get success change this one to true and again you'll see user left and this is using promises now instead of using callbacks and as you can see the code is a lot cleaner to write than with using callbacks because as 
+
+you start nesting callbacks you started to get in a huge world of trouble where your code just keeps getting indented to indented even further below the promises instead of nesting callbacks all you do is just add another then so it would look just like this you would have then and then instead of having a callback inside of 
+
+a callback inside of a callback which is what's known as callback hell and it's absolutely terrible promises are great and they completely solve that problem for us now that we have an understanding of how promises work let's take a look at some of the things that we can do with promises I've changed my code a little bit 
+
+here so that now we just have three simple promises being created and they're super simple all they do is always resolve they never reject and they just send a single message when they resolve and each one of these is about recording a new video for my channel so let's say we want to do something after every recorded 
+
+all three of these videos and we want to record run all these in parallel at the same time so we don't have to worry about waiting for one before we start the next we can use what's called promised at all so we just say promised at all and inside of here we send it in an array of 
+
+all the different promises that we want to run so in our case we want to record video one we want to record video two and we want to record video three as well and promise doll is going to run every single one of these promises and as soon as it's done it is then going to call the 
+
+dot Ben and dot catch methods depending on if they resolved or fail so in our case all of these are going to resolve so we'll use a dot ven and this dot Ben is going to send an array of all of the successful messages so it's going to send us an array with all of these different resolved 
+
+parameters so we're going to have a messages in here and this messages is just going to be an array that we're just going to print to the screen so we'll print messages and if we say that you'll see that we got video one recorded video two recorded and video three recorded in this array here which is exactly 
+
+perfect that means all of our promises ran and they all returned and as soon as they were all done it called this dot ven method and you can't really see that with this example but these are all running at the exact same time so for this one for example took a long time and actually needed to call 
+
+the database for example and get some results back it'll run at the same time as these other two so if these other two are way too quick they won't have to wait for this first one to finish and now let's say that we want to just do something as soon as one of my videos is done being 
+
+completed we can use promised app race instead of promised at all and promise dot race is just like promised at all except for it'll return as soon as the first one is completed instead of waiting for everything to complete and because of that it will only return a single message in the dot then as opposed to all 
+
+of the messages so now if we run promised race you'll notice we're only going to get one return value which is video one recorded and that's as if he expected video one was the first time to record and that's just because these are so simple it's always going to run them in the same order and that's all 
+
+there is to creating promises in JavaScript they're extremely straightforward once you understand the concepts of resolve versus reject and very similar to callbacks which you probably already know from using JavaScript before so if you enjoyed this video please make sure to subscribe to my channel for more videos like this and check out my other es6 javascript related 
+
+videos over here thank you guys very much for watching and have a nice day 

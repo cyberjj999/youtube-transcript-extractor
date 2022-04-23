@@ -3,7 +3,8 @@
 from youtube_transcript_api import YouTubeTranscriptApi
 
 # input video link
-video_url = 'https://www.youtube.com/watch?v=rkBk2BCFFxc'
+video_url = 'https://www.youtube.com/watch?v=DHvZLI7Db8E'
+
 video_id = video_url.split('?v=')[1]                            # extract video id from link
 print('Video URL:', video_url, '| Video ID Extracted:', video_id)
 print('Extracting Transcript From', video_url)
