@@ -1,6 +1,99 @@
-// Demo: var serialized_html = DOMtoString(document);
-// As of 28 Mar 2022, YouTube has changed their HTML DOM and the script is not functioning. I have created another python script which uses the api mentioned below to extract YouTube transcript.
-// https://stackoverflow.com/questions/14061195/how-to-get-transcript-in-youtube-api-v3
+getAndFormatYoutubeTranscript();
+
+// https://javascript.plainenglish.io/problem-with-returning-values-from-async-await-function-javascript-e99c94a47ca5
+async function getAndFormatYoutubeTranscript() {
+    alert("Extracting YouTube Transcript...");
+    let allTranscriptText = await extractYouTubeTranscript();
+    if (allTranscriptText == "No Transcript Available")
+        alert("No Transcript Available!");
+    else copyTextToClipboard(allTranscriptText);
+}
+
+/**
+ * Function that extract YouTube transcript through a series of button clicks and looping through youtube transcript HTML DOM's text
+ * Reference: https://stackoverflow.com/questions/10596417/is-there-a-way-to-get-element-by-xpath-using-javascript-in-selenium-webdriver
+ * @return   {String} All youtube transcript text (unformatted)
+ */
+async function extractYouTubeTranscript() {
+    let allTranscriptText = "";
+    let optionsButtonXPath =
+        "/html/body/ytd-app/div[1]/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[6]/div[1]/div[2]/ytd-video-primary-info-renderer/div/div/div[3]/div/ytd-menu-renderer/yt-icon-button";
+    let showTranscriptButtonXPath =
+        "/html/body/ytd-app/ytd-popup-container/tp-yt-iron-dropdown/div/ytd-menu-popup-renderer/tp-yt-paper-listbox/ytd-menu-service-item-renderer[2]/tp-yt-paper-item";
+    // let youtubeTranscriptBody =
+    //     "/html/body/ytd-app/div[1]/ytd-page-manager/ytd-watch-flexy/div[5]/div[2]/div/div[1]/ytd-engagement-panel-section-list-renderer[4]/div[2]/ytd-transcript-renderer/div[2]/ytd-transcript-search-panel-renderer/div[2]";
+    let youtubeTranscriptBody =
+        "/html/body/ytd-app/div[1]/ytd-page-manager/ytd-watch-flexy/div[5]/div[2]/div/div[1]/ytd-engagement-panel-section-list-renderer[4]/div[2]/ytd-transcript-renderer/div[2]/ytd-transcript-search-panel-renderer/div[2]/ytd-transcript-segment-list-renderer/div[1]";
+
+    optionsButton = getElementByXpath(optionsButtonXPath);
+    if (optionsButton == null) return "No Transcript Available";
+
+    // click on options button
+    optionsButton.click();
+    // sleep for 1 second for options dropdown to show up
+    await sleep(1);
+    // click on show transcript button
+    transcriptButton = getElementByXpath(showTranscriptButtonXPath);
+    if (transcriptButton == null) return "No Transcript Available";
+
+    transcriptButton.click();
+    // sleep for 1 second for transcript body to show up
+    await sleep(1);
+    // get youtubeTranscriptBody element
+    youtubeTranscriptBodyElement = getElementByXpath(youtubeTranscriptBody);
+    let attempt = 0;
+    while ((youtubeTranscriptBodyElement == null) & (attempt != 5)) {
+        // wait for another 2.5s
+        await sleep(1);
+        youtubeTranscriptBodyElement = getElementByXpath(youtubeTranscriptBody);
+        attempt++;
+    }
+
+    // if transcript body is still null, then there is no transcript available
+    if (youtubeTranscriptBodyElement == null) return "No Transcript Available";
+
+    let youtubeTranscriptTextDOMList = youtubeTranscriptBodyElement.childNodes;
+    youtubeTranscriptTextDOMList.forEach((item) => {
+        // console.log(item);
+        let childDiv = item.getElementsByTagName("div")[0];
+        let youtubeTranscriptFormattedString = childDiv.getElementsByTagName(
+            "yt-formatted-string"
+        )[0];
+        let transcriptText = youtubeTranscriptFormattedString.textContent;
+        allTranscriptText += transcriptText + " ";
+    });
+
+    return allTranscriptText;
+}
+
+/* Helper Functions */
+
+/**
+ * Function that gets HTML DOM Node with the element's xPath
+ * Reference: https://stackoverflow.com/questions/10596417/is-there-a-way-to-get-element-by-xpath-using-javascript-in-selenium-webdriver
+ * @param    {String} path    xPath of element
+ * @return   {Object} HTML DOM Node
+ */
+function getElementByXpath(path) {
+    return document.evaluate(
+        path,
+        document,
+        null,
+        XPathResult.FIRST_ORDERED_NODE_TYPE,
+        null
+    ).singleNodeValue;
+}
+
+// https://www.freecodecamp.org/news/javascript-sleep-wait-delay/
+// Sleep function
+function sleep(duration) {
+    // return a promise object that will only resolve after timeout is over
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve();
+        }, duration * 1000);
+    });
+}
 
 // Format transcript text by breaking it into chunks of 60 words
 function formatTranscriptText(text) {
@@ -18,48 +111,10 @@ function formatTranscriptText(text) {
     return paragraphText;
 }
 
-// Function to check if transcript is available
-function isTranscriptAvailable() {
-    transcriptAvailable = true;
-    
-    // const wait=ms=>new Promise(resolve => setTimeout(resolve, ms));
-    
-    // // Click more actions (open dropdown to populate option for opening transcript)
-    // let menu = document.getElementById("menu-container").getElementsByTagName("yt-icon-button");
-    // for (var i = 0; i < menu.length; i++) {
-    //     if (menu[i].className == "dropdown-trigger style-scope ytd-menu-renderer") {
-    //         menu[i].click();
-    //     }
-    // }
-
-    // // Open Transcript
-    // setTimeout(function () {
-    //     // Use timeout to prevent null error
-    //     // var x = document.querySelector('#items > ytd-menu-service-item-renderer > tp-yt-paper-item');
-    //     var x = document.querySelector("#items > ytd-menu-service-item-renderer:nth-child(2) > tp-yt-paper-item");
-    //     x.click();
-    // }, 500);
-    
-    
-    /* This code does not work when there is advertisement with subtitles - please refer to the updated code above */
-    let captionButton = document.querySelector(
-        "#movie_player > div.ytp-chrome-bottom > div.ytp-chrome-controls > div.ytp-right-controls > button.ytp-subtitles-button.ytp-button"
-    );
-    if (captionButton === null) {
-        alert("Invalid Website (Please use this on YouTube only)");
-        transcriptAvailable = false;
-    }
-    // https://stackoverflow.com/questions/19669786/check-if-element-is-visible-in-dom
-    else if (captionButton.offsetParent === null) {
-        alert("No Caption In Video! Unable to Extract Transcript!");
-        transcriptAvailable = false;
-    }
-    return transcriptAvailable;
-}
-
-function copyTextToClipboard(transcriptText){    
+// Copy text to clipboard
+function copyTextToClipboard(transcriptText) {
     // Quick Formatting (feel free to remove)
-    paragraphText = formatTranscriptText(transcriptText);        
+    paragraphText = formatTranscriptText(transcriptText);
     navigator.clipboard
         .writeText(paragraphText)
         .then(
@@ -74,80 +129,5 @@ function copyTextToClipboard(transcriptText){
         )
         .catch((err) => {
             console.error("Failed to read clipboard contents: ", err);
-        });        
+        });
 }
-
-function extractTranscriptText() {
-    transcriptAvailable = isTranscriptAvailable();
-    if (transcriptAvailable == false ) return
-
-    alert("Starting Transcript Extraction...");    
-    var transcriptText = "";
-
-    let transcriptBody = document.querySelector("#body > ytd-transcript-body-renderer");
-    if (transcriptBody != null) {        
-        let transcriptBodyList = document.querySelector("#body > ytd-transcript-body-renderer").childNodes;
-        // Loop through all transcriptBodyList and extract transcript text
-        for (var i = 0; i < transcriptBodyList.length; i++) {
-            var transcriptChild = transcriptBodyList[i]; // extract i-th child
-            if (transcriptChild != undefined) { // check if child is defined
-                var transcriptChildText = document.querySelectorAll("div.cues.style-scope.ytd-transcript-body-renderer > div")[i];
-                if (transcriptChildText != undefined) {
-                    transcriptChildText = transcriptChildText.innerText;
-                    transcriptText += transcriptChildText + " ";
-                }
-                // alert(transcriptChildText);
-            }
-        }
-        copyTextToClipboard(transcriptText);
-        return
-    }
-    
-    // Click more actions (open dropdown to populate option for opening transcript)
-    let menu = document.getElementById("menu-container").getElementsByTagName("yt-icon-button");
-    for (var i = 0; i < menu.length; i++) {
-        if (menu[i].className == "dropdown-trigger style-scope ytd-menu-renderer") {
-            menu[i].click();
-        }
-    }
-
-    // Open Transcript
-    setTimeout(function () {
-        // Use timeout to prevent null error
-        var x = document.querySelector("#items > ytd-menu-service-item-renderer:nth-child(2) > tp-yt-paper-item");
-        x.click();
-    }, 500);
-
-    // Extract Transcript Content
-    setTimeout(function () {
-        // Use timeout to prevent null error
-        // Select Transcript Body's ChildNodes List (i.e. all child tags that contain transcript text + timestamp)
-        let transcriptBody = document.querySelector("#body > ytd-transcript-body-renderer");
-        if (transcriptBody == null) {
-            alert("Error! Transcript Body Cannot Be Found!");
-        }
-        let transcriptBodyList = document.querySelector("#body > ytd-transcript-body-renderer").childNodes;
-        // Loop through all transcriptBodyList and extract transcript text
-        for (var i = 0; i < transcriptBodyList.length; i++) {
-            var transcriptChild = transcriptBodyList[i]; // extract i-th child
-            if (transcriptChild != undefined) { // check if child is defined
-                var transcriptChildText = document.querySelectorAll("div.cues.style-scope.ytd-transcript-body-renderer > div")[i];
-                if (transcriptChildText != undefined) {
-                    transcriptChildText = transcriptChildText.innerText;
-                    transcriptText += transcriptChildText + " ";
-                }
-                // alert(transcriptChildText);
-            }
-        }
-        copyTextToClipboard(transcriptText);
-        // // alert(transcriptText);
-        // return transcriptText;'
-    }, 3000);
-}
-
-extractTranscriptText();
-
-// chrome.runtime.sendMessage({
-//     action: "getTranscript",
-//     source: extractTranscriptText(),
-// });

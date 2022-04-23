@@ -1,19 +1,19 @@
 {
     "name": "Youtube Transcript Extractor",
-    "version": "1.0",
-    "manifest_version": 2,
+    "version": "1.2",
+    "manifest_version": 3,
     "description": "Extract Youtube Transcript for Maximum Productivity",
     "icons": {
         "128": "icon128.png",
         "48": "icon48.png",
         "16": "icon16.png"
     },
-    "browser_action": {
+    "action": {
+        "default_title": "Extract YouTube Transcript",
         "default_icon": "icon16.png"
     },
     "background": {
-        "scripts": ["background.js"],
-        "persistent": false
-    },    
-    "permissions": ["tabs", "<all_urls>"]
+        "service_worker": "background.js"
+    },
+    "permissions": ["activeTab", "scripting"]
 }
