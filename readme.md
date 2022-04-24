@@ -21,7 +21,10 @@ P.S. A backup python script is also available to achieve the same functionality 
     - A popup ("Copy To Clipboard Successful!") will show
     - You now have the YouTube transcript in your clipboard! (Ctrl/Cmd + V to display it on notepad or other text editor)
 
-**Note\***: The chrome extension will not work for YouTube videos without caption.
+**Note\***:
+
+-   This chrome extension will not work for YouTube videos without caption.
+-   Please also ensure your snipping tool is not active (i.e. overlaying) the youtube video as it will cause the clipboard api to fail.
 
 ---
 
