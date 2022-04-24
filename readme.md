@@ -3,7 +3,7 @@
 A chrome extension to supercharge your workflow and improve your productivity by extracting YouTube's transcript.
 P.S. A backup python script is also available to achieve the same functionality should YouTube change its HTML DOM, rendering the chrome extension useless.
 
-## How to use?
+## Chrome Extension - How to use?
 
 1. Load the chrome extension
 
@@ -23,7 +23,7 @@ P.S. A backup python script is also available to achieve the same functionality 
 
 **Note\***: The chrome extension will not work for YouTube videos without caption.
 
-### How to use?
+### Python Script - How to use?
 
 1. Install all dependencies for the python script
     ```
