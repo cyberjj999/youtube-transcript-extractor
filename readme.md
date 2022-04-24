@@ -16,9 +16,9 @@ P.S. A backup python script is also available to achieve the same functionality 
 
 2. Navigate to any YouTube video
 3. Click on the chrome extension
-    - A popup ("Starting Transcript Extraction...") will show - click 'OK'
+    - A popup ("Extracting YouTube Transcript... (Press OK to Continue)") will show - click 'OK'
     - Wait for a few seconds
-    - A popup ("Copy Successful!") will show
+    - A popup ("Copy To Clipboard Successful!") will show
     - You now have the YouTube transcript in your clipboard! (Ctrl/Cmd + V to display it on notepad or other text editor)
 
 **Note\***: The chrome extension will not work for YouTube videos without caption.
