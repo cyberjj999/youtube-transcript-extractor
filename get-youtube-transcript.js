@@ -2,7 +2,7 @@ getAndFormatYoutubeTranscript();
 
 // https://javascript.plainenglish.io/problem-with-returning-values-from-async-await-function-javascript-e99c94a47ca5
 async function getAndFormatYoutubeTranscript() {
-    alert("Extracting YouTube Transcript...");
+    alert("Extracting YouTube Transcript... (Press OK to Continue)");
     let allTranscriptText = await extractYouTubeTranscript();
     if (allTranscriptText == "No Transcript Available")
         alert("No Transcript Available!");
@@ -20,10 +20,6 @@ async function extractYouTubeTranscript() {
         "/html/body/ytd-app/div[1]/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[6]/div[1]/div[2]/ytd-video-primary-info-renderer/div/div/div[3]/div/ytd-menu-renderer/yt-icon-button";
     let showTranscriptButtonXPath =
         "/html/body/ytd-app/ytd-popup-container/tp-yt-iron-dropdown/div/ytd-menu-popup-renderer/tp-yt-paper-listbox/ytd-menu-service-item-renderer[2]/tp-yt-paper-item";
-    // let youtubeTranscriptBody =
-    //     "/html/body/ytd-app/div[1]/ytd-page-manager/ytd-watch-flexy/div[5]/div[2]/div/div[1]/ytd-engagement-panel-section-list-renderer[4]/div[2]/ytd-transcript-renderer/div[2]/ytd-transcript-search-panel-renderer/div[2]";
-    let youtubeTranscriptBody =
-        "/html/body/ytd-app/div[1]/ytd-page-manager/ytd-watch-flexy/div[5]/div[2]/div/div[1]/ytd-engagement-panel-section-list-renderer[4]/div[2]/ytd-transcript-renderer/div[2]/ytd-transcript-search-panel-renderer/div[2]/ytd-transcript-segment-list-renderer/div[1]";
 
     optionsButton = getElementByXpath(optionsButtonXPath);
     if (optionsButton == null) return "No Transcript Available";
@@ -38,29 +34,36 @@ async function extractYouTubeTranscript() {
 
     transcriptButton.click();
     // sleep for 1 second for transcript body to show up
-    await sleep(1);
-    // get youtubeTranscriptBody element
-    youtubeTranscriptBodyElement = getElementByXpath(youtubeTranscriptBody);
+    // await sleep(1);
+
+    // let youtubeTranscriptStringDomCollection = document.getElementsByClassName(
+    //     "segment-text style-scope ytd-transcript-segment-renderer"
+    // );
+    let youtubeTranscriptStringDomCollection = document.querySelectorAll(
+        "#segments-container > ytd-transcript-segment-renderer > div > yt-formatted-string"
+    );
+
+    // Wait for transcript to render in DOM
     let attempt = 0;
-    while ((youtubeTranscriptBodyElement == null) & (attempt != 5)) {
-        // wait for another 2.5s
-        await sleep(1);
-        youtubeTranscriptBodyElement = getElementByXpath(youtubeTranscriptBody);
+    while (
+        (youtubeTranscriptStringDomCollection.length == 0) &
+        (attempt != 10)
+    ) {
+        // wait for another 0.5s before querying again
+        await sleep(0.5);
+        youtubeTranscriptStringDomCollection = document.querySelectorAll(
+            "#segments-container > ytd-transcript-segment-renderer > div > yt-formatted-string"
+        );
+        console.log(youtubeTranscriptStringDomCollection);
         attempt++;
     }
 
     // if transcript body is still null, then there is no transcript available
-    if (youtubeTranscriptBodyElement == null) return "No Transcript Available";
+    if (youtubeTranscriptStringDomCollection.length == 0)
+        return "No Transcript Available";
 
-    let youtubeTranscriptTextDOMList = youtubeTranscriptBodyElement.childNodes;
-    youtubeTranscriptTextDOMList.forEach((item) => {
-        // console.log(item);
-        let childDiv = item.getElementsByTagName("div")[0];
-        let youtubeTranscriptFormattedString = childDiv.getElementsByTagName(
-            "yt-formatted-string"
-        )[0];
-        let transcriptText = youtubeTranscriptFormattedString.textContent;
-        allTranscriptText += transcriptText + " ";
+    youtubeTranscriptStringDomCollection.forEach((transcriptDOM) => {
+        allTranscriptText += transcriptDOM.textContent + " ";
     });
 
     return allTranscriptText;
@@ -120,11 +123,11 @@ function copyTextToClipboard(transcriptText) {
         .then(
             () => {
                 //clipboard successfully set
-                alert("Copy Successful!");
+                alert("Copy To Clipboard Successful!");
             },
             () => {
                 //clipboard write failed, use fallback
-                alert("Copy Failed!");
+                alert("Copy To Clipboard Failed!");
             }
         )
         .catch((err) => {
