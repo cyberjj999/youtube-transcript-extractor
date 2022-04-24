@@ -23,6 +23,8 @@ P.S. A backup python script is also available to achieve the same functionality 
 
 **Note\***: The chrome extension will not work for YouTube videos without caption.
 
+---
+
 ### Python Script - How to use?
 
 1. Install all dependencies for the python script
