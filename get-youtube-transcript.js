@@ -66,6 +66,13 @@ async function extractYouTubeTranscript() {
         allTranscriptText += transcriptDOM.textContent + " ";
     });
 
+    // https://stackoverflow.com/questions/9849754/how-can-i-replace-newlines-line-breaks-with-spaces-in-javascript
+    // Please take note of the caveat that your first argument SHOULD NOT BE A STRING!!! Else it won't work
+    // allTranscriptText = allTranscriptText.replace(/\n/g, " ");
+
+    // https://stackoverflow.com/questions/1981349/regex-to-replace-multiple-spaces-with-a-single-space
+    // Handy way to replace all tabs/spaces/newline with a space. (This works for consecutive spaces too)
+    allTranscriptText = allTranscriptText.replace(/\s\s+/g, " ");
     return allTranscriptText;
 }
 
