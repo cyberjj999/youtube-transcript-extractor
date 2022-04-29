@@ -25,6 +25,7 @@ P.S. A backup python script is also available to achieve the same functionality 
 
 -   This chrome extension will not work for YouTube videos without caption.
 -   Please also ensure your snipping tool is not active (i.e. overlaying) the youtube video as it will cause the clipboard api to fail.
+-   Also, the tool may not work if you split screen on your youtube video. (It should work if you use the chrome extension with a full size chrome window)
 
 ---
 
